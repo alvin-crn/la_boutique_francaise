@@ -42,3 +42,27 @@ body {
     height: 20px;
     padding-left: 20px;
 }
+
+.block-small{
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-check {
+    background-color: rgb(230, 242, 252);
+    padding: 20px;
+    padding-left: 30px;
+    margin-top: 7px;
+    border-radius: 10px;
+}
+
+.col-form-label {
+    font-weight: bold;
+}
+
+.order-summary {
+    background-color: rgb(230, 242, 252);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 22px;
+}
