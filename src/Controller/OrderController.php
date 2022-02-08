@@ -21,12 +21,11 @@ class OrderController extends AbstractController
     {
         $this->entityManager = $entityManager;
     }
-    
+
     #[Route('/commande', name: 'order')]
     public function index(Cart $cart, Request $request): Response
     {
-        if(!$this->getUser()->getAddresses()->getValues())
-        {
+        if (!$this->getUser()->getAddresses()->getValues()) {
             return $this->redirectToRoute('account_address_add');
         }
 
@@ -56,15 +55,15 @@ class OrderController extends AbstractController
             $date = new DateTimeImmutable();
             $carriers = $form->get('carriers')->getData();
             $delivery = $form->get('addresses')->getData();
-            $delivery_content = $delivery->getFirstname().''.$delivery->getLastname();
-            $delivery_content .= '<br/>'.$delivery->getPhone();
+            $delivery_content = $delivery->getFirstname() . '' . $delivery->getLastname();
+            $delivery_content .= '<br/>' . $delivery->getPhone();
 
-            if($delivery->getCompany()) {
-                $delivery_content .= '<br/>'.$delivery->getCompany();   
+            if ($delivery->getCompany()) {
+                $delivery_content .= '<br/>' . $delivery->getCompany();
             }
-            $delivery_content .= '<br/>'.$delivery->getAddress();
-            $delivery_content .= '<br/>'.$delivery->getPostal().''.$delivery->getCity();
-            $delivery_content .= '<br/>'.$delivery->getCountry();
+            $delivery_content .= '<br/>' . $delivery->getAddress();
+            $delivery_content .= '<br/>' . $delivery->getPostal() . '' . $delivery->getCity();
+            $delivery_content .= '<br/>' . $delivery->getCountry();
 
             //enregister commande
             $order = new Order();
@@ -78,8 +77,8 @@ class OrderController extends AbstractController
             $this->entityManager->persist($order);
 
             //enregister produit
-            
-            foreach($cart->getFull() as $product) {
+
+            foreach ($cart->getFull() as $product) {
                 $orderDetails = new OrderDetails();
                 $orderDetails->setMyOrder($order);
                 $orderDetails->setProduct($product['product']->getName());
@@ -87,9 +86,10 @@ class OrderController extends AbstractController
                 $orderDetails->setPrice($product['product']->getPrice());
                 $orderDetails->setTotal($product['product']->getPrice() * $product['quantity']);
                 $this->entityManager->persist($orderDetails);
+
             }
-            
-            $this->entityManager->flush();
+
+            //$this->entityManager->flush();
 
             return $this->render('order/add.html.twig', [
                 'cart' => $cart->getFull(),
