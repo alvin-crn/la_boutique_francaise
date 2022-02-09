@@ -67,6 +67,8 @@ class OrderController extends AbstractController
 
             //enregister commande
             $order = new Order();
+            $ref = $date->format('dmY').'-'.uniqid();
+            $order->setReference($ref);
             $order->setUser($this->getUser());
             $order->setCreatedAt($date);
             $order->setCarrierName($carriers->getName());
@@ -86,15 +88,15 @@ class OrderController extends AbstractController
                 $orderDetails->setPrice($product['product']->getPrice());
                 $orderDetails->setTotal($product['product']->getPrice() * $product['quantity']);
                 $this->entityManager->persist($orderDetails);
-
             }
-
-            //$this->entityManager->flush();
+            
+            $this->entityManager->flush();
 
             return $this->render('order/add.html.twig', [
                 'cart' => $cart->getFull(),
                 'carrier' => $carriers,
                 'delivery' => $delivery_content,
+                'ref' => $order->getReference(),
             ]);
         }
         return $this->redirectToRoute('cart');
