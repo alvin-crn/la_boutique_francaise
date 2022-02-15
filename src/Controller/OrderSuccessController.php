@@ -34,7 +34,7 @@ class OrderSuccessController extends AbstractController
             //vider le panier
             $cart->remove();
 
-            // Modifier le statut isPaid de notre commande à 1 (True)
+            // Modifier le statut state  de notre commande à 1
             $order->setState(1);
             $this->entityManager->flush();
 
