@@ -38,7 +38,6 @@ class AccountPasswordController extends AbstractController
                 $new_psw = $form->get('new_password')->getData();
                 $password = password_hash($new_psw, PASSWORD_DEFAULT);
                 $user->setPassword($password);
-                // $this->entityManager->persist($user);
                 $this->entityManager->flush();
                 $notif = 'Votre mot de passe a bien été mise à jour.';
             } else {
