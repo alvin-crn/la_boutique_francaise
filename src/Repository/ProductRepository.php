@@ -21,24 +21,25 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
-      * @return Product[]
-      */
-    public function findWithSearch(Search $search) {
+     * @return Product[]
+     */
+    public function findWithSearch(Search $search)
+    {
         $query = $this
-        ->createQueryBuilder('p')
-        ->select('c', 'p')
-        ->join('p.category', 'c');
+            ->createQueryBuilder('p')
+            ->select('c', 'p')
+            ->join('p.category', 'c');
 
         if (!empty($search->categories)) {
             $query = $query
-            ->andWhere('c.id IN (:categories)')
-            ->setParameter('categories', $search->categories);
+                ->andWhere('c.id IN (:categories)')
+                ->setParameter('categories', $search->categories);
         }
 
         if (!empty($search->string)) {
             $query = $query
-            ->andWhere('p.name LIKE :string')
-            ->setParameter('string', "%{$search->string}%");
+                ->andWhere('p.name LIKE :string')
+                ->setParameter('string', "%{$search->string}%");
         }
 
         return $query->getQuery()->getResult();
